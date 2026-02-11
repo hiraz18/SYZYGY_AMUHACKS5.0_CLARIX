@@ -764,3 +764,936 @@
     letter-spacing: 0.2em; text-transform: uppercase;
     color: rgba(242,236,228,0.3); margin: 0.8rem 0 0.5rem;
   }
+
+
+  .emg-btn {
+    width: 100%; padding: 0.65rem 0.9rem; border-radius: 10px;
+    border: 1px solid rgba(200,30,30,0.4);
+    background: rgba(255,255,255,0.95);
+    color: #1a0505; font-size: 0.82rem;
+    cursor: none; transition: all 0.2s; text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; gap: 0.7rem;
+    margin-bottom: 0.45rem; text-decoration: none;
+  }
+  .emg-btn:hover { background: rgba(255,255,255,1); border-color: rgba(200,30,30,0.7); transform: translateX(2px); box-shadow: 0 2px 8px rgba(200,30,30,0.2); }
+  .emg-btn .emg-icon { font-size: 1rem; flex-shrink: 0; filter: grayscale(0); }
+  .emg-btn-label { display: flex; flex-direction: column; }
+  .emg-btn-name { font-weight: 500; color: #1a0505; line-height: 1.2; }
+  .emg-btn-num { font-size: 0.7rem; color: rgba(26,5,5,0.6); }
+
+  .emg-contact-btn {
+    background: rgba(107,26,42,0.15); border-color: rgba(155,35,53,0.3);
+  }
+  .emg-contact-btn:hover { background: rgba(107,26,42,0.3); border-color: rgba(196,43,66,0.5); }
+
+  .emg-add-btn {
+    width: 100%; padding: 0.5rem; border-radius: 8px;
+    border: 1px dashed rgba(155,35,53,0.3);
+    background: transparent; color: var(--muted); font-size: 0.75rem;
+    cursor: none; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+    margin-top: 0.3rem;
+  }
+  .emg-add-btn:hover { border-color: rgba(196,43,66,0.5); color: var(--cream); background: rgba(107,26,42,0.1); }
+
+  .emg-input-row {
+    display: none; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap;
+  }
+  .emg-input-row.show { display: flex; }
+  .emg-input {
+    flex: 1; min-width: 0; padding: 0.45rem 0.7rem; border-radius: 8px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(155,35,53,0.25);
+    color: var(--cream); font-size: 0.78rem; font-family: 'DM Sans', sans-serif;
+    outline: none;
+  }
+  .emg-input:focus { border-color: rgba(196,43,66,0.5); }
+  .emg-input::placeholder { color: rgba(242,236,228,0.25); }
+  .emg-save-btn {
+    padding: 0.45rem 0.8rem; border-radius: 8px;
+    background: var(--wine); border: none; color: var(--cream);
+    font-size: 0.75rem; cursor: none; font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s; white-space: nowrap;
+  }
+  .emg-save-btn:hover { background: var(--wine-bright); }
+
+  /* === STATS SECTION === */
+  .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 4rem; text-align: center; }
+  @media (max-width: 600px) { .stats-row { grid-template-columns: 1fr; gap: 1.5rem; } }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 300;
+    color: var(--wine-glow);
+    opacity: 0; transition: opacity 0.7s ease;
+  }
+  .stat-num.visible { opacity: 1; }
+  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; letter-spacing: 0.08em; }
+
+  /* === TESTIMONIALS === */
+  #testimonials { overflow: hidden; }
+  .test-track {
+    display: flex; gap: 1.5rem; margin-top: 3rem;
+    animation: scrollTest 30s linear infinite;
+    width: max-content;
+  }
+  .test-track:hover { animation-play-state: paused; }
+  @keyframes scrollTest { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .test-card {
+    min-width: 300px; padding: 1.8rem; border-radius: 18px;
+    background: linear-gradient(135deg, rgba(17,11,14,0.9), rgba(107,26,42,0.06));
+    border: 1px solid var(--border);
+  }
+  .test-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: var(--cream); line-height: 1.6; margin-bottom: 1rem; }
+  .test-author { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.06em; }
+  .test-stars { color: var(--wine-glow); font-size: 0.7rem; letter-spacing: 0.2em; margin-bottom: 0.8rem; }
+
+  /* === FOOTER === */
+  footer {
+    padding: 3rem 2rem; border-top: 1px solid rgba(107,26,42,0.2);
+    text-align: center;
+  }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: var(--cream); letter-spacing: 0.15em; margin-bottom: 0.5rem; }
+  .footer-logo span { color: var(--wine-glow); }
+  .footer-tagline { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em; color: var(--wine-glow); text-transform: uppercase; margin-bottom: 2rem; }
+  .footer-links { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--cream); }
+  .footer-copy { font-size: 0.75rem; color: rgba(242,236,228,0.2); }
+
+  /* Ripple effect */
+  .ripple {
+    position: absolute; border-radius: 50%;
+    background: rgba(196,43,66,0.3);
+    transform: scale(0); animation: rippleAnim 0.6s linear;
+    pointer-events: none;
+  }
+  @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
+
+  /* divider */
+  .divider { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, var(--wine-glow), transparent); margin: 2rem auto; }
+
+  /* Fade in on scroll */
+  .fade-in-scroll {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-in-scroll.visible { opacity: 1; transform: translateY(0); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; position: relative; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.2rem; }
+    #emergency-panel { bottom: 1rem; left: 1rem; }
+    .lang-switcher { position: relative; top: 0; right: 0; z-index: 101; }
+    .lang-toggle-btn { padding: 0.35rem 0.8rem; font-size: 0.75rem; }
+    .lang-icon { font-size: 0.85rem; }
+    .lang-menu { min-width: 110px; }
+    .lang-option { padding: 0.45rem 0.7rem; font-size: 0.75rem; }
+    .landing-title { font-size: clamp(2.5rem, 12vw, 5rem); line-height: 1.1; word-break: break-word; overflow-wrap: break-word; }
+    .cta-group { flex-direction: column; gap: 1.5rem; }
+    .btn-primary, .btn-ghost { width: 100%; max-width: 300px; margin: 0 auto; word-break: keep-all; overflow: hidden; text-overflow: ellipsis; }
+    .demo-container { gap: 2rem; }
+    .phone-mock { width: 250px; }
+    .phone-screen { padding: 1rem 1rem 1.5rem; }
+    .phone-logo { font-size: 1.2rem; margin-bottom: 1.5rem; word-break: break-word; }
+    .phone-question { font-size: 0.9rem; margin-bottom: 1.5rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.5; }
+    .phone-btn-yes, .phone-btn-no { padding: 0.8rem; font-size: 0.85rem; word-break: keep-all; }
+    .stability-bar { margin-bottom: 1rem; }
+    .stability-label { font-size: 0.5rem; word-break: break-word; }
+    .demo-steps { gap: 1rem; }
+    .step-num { min-width: 20px; }
+    .step-title { font-size: 1rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.4; }
+    .step-desc { font-size: 0.75rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; }
+    .nnn-grid { gap: 1rem; }
+    .nnn-card { padding: 1.2rem; word-break: break-word; overflow-wrap: break-word; }
+    .nnn-label { font-size: 0.6rem; word-break: break-word; }
+    .nnn-value { font-size: 0.85rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.5; }
+    .stats-row { gap: 1.5rem; }
+    .stat-num { font-size: 2.5rem; line-height: 1.2; }
+    .stat-label { font-size: 0.7rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.5; }
+    .test-card { min-width: 280px; padding: 1.5rem; word-break: break-word; overflow-wrap: break-word; }
+    .test-text { font-size: 1rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; }
+    .test-author { font-size: 0.7rem; word-break: break-word; }
+    .footer-links { gap: 1.5rem; flex-wrap: wrap; }
+    .footer-copy { font-size: 0.7rem; word-break: break-word; }
+    #audio-panel { bottom: 1rem; right: 1rem; }
+    #audio-drawer { width: 200px; padding: 1rem 1rem 0.8rem; }
+    .audio-title { font-size: 0.55rem; margin-bottom: 0.7rem; word-break: break-word; }
+    .audio-controls { gap: 0.4rem; }
+    .audio-btn { padding: 0.4rem 0.6rem; font-size: 0.7rem; word-break: keep-all; white-space: nowrap; }
+    .vol-row { margin-top: 0.6rem; padding-top: 0.6rem; }
+    .vol-icon { font-size: 0.7rem; }
+    .vol-slider { height: 2px; }
+    #emergency-drawer { width: 240px; padding: 1rem; }
+    .emg-title { font-size: 0.55rem; margin-bottom: 0.8rem; word-break: break-word; }
+    .emg-btn { padding: 0.55rem 0.8rem; font-size: 0.75rem; word-break: break-word; overflow-wrap: break-word; }
+    .emg-btn-label { flex-direction: column; gap: 0.1rem; }
+    .emg-btn-name { font-size: 0.75rem; word-break: break-word; overflow-wrap: break-word; }
+    .emg-btn-num { font-size: 0.65rem; word-break: break-all; }
+    .emg-add-btn { padding: 0.4rem; font-size: 0.7rem; word-break: keep-all; }
+    .emg-input { padding: 0.4rem 0.6rem; font-size: 0.7rem; }
+    .emg-save-btn { padding: 0.4rem 0.7rem; font-size: 0.7rem; word-break: keep-all; }
+    .scroll-hint { bottom: 3rem; }
+  }
+
+  @media (max-width: 480px) {
+    nav { padding: 0.8rem 1rem; }
+    section { padding: 4rem 1rem; }
+    .landing-inner { padding: 5rem 1rem 2rem; }
+    .landing-title { font-size: clamp(2rem, 14vw, 4rem); line-height: 1.1; word-break: break-word; overflow-wrap: break-word; }
+    .landing-tagline { font-size: clamp(0.6rem, 2vw, 0.8rem); margin-top: 0.5rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; letter-spacing: 0.2em; }
+    .landing-sub { font-size: clamp(0.9rem, 2.5vw, 1.1rem); margin: 2rem auto 2.5rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.8; }
+    .cta-group { gap: 1rem; }
+    .btn-primary, .btn-ghost { padding: 0.9rem 2rem; font-size: 0.9rem; word-break: keep-all; overflow: hidden; text-overflow: ellipsis; }
+    .scroll-hint { bottom: 1.5rem; }
+    .scroll-hint span { font-size: 0.55rem; word-break: keep-all; }
+    .scroll-line { height: 40px; }
+    .section-title { font-size: clamp(1.8rem, 6vw, 3rem); word-break: break-word; overflow-wrap: break-word; line-height: 1.2; }
+    .cards-grid { gap: 1rem; }
+    .card { padding: 1.8rem; word-break: break-word; overflow-wrap: break-word; }
+    .card-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+    .card-title { font-size: 1.2rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.3; }
+    .card-desc { font-size: 0.8rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; }
+    .science-grid { gap: 1rem; }
+    .science-card { padding: 1.5rem; word-break: break-word; overflow-wrap: break-word; }
+    .sci-title { font-size: 1.1rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.3; }
+    .sci-desc { font-size: 0.75rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; }
+    .demo-container { gap: 1.5rem; }
+    .phone-mock { width: 220px; }
+    .phone-screen { padding: 0.8rem 0.8rem 1.2rem; }
+    .phone-logo { font-size: 1.1rem; margin-bottom: 1.2rem; word-break: break-word; }
+    .phone-question { font-size: 0.85rem; margin-bottom: 1.2rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.5; }
+    .phone-btn-yes, .phone-btn-no { padding: 0.75rem; font-size: 0.8rem; word-break: keep-all; }
+    .stability-bar { height: 2px; margin-bottom: 0.8rem; }
+    .stability-label { font-size: 0.45rem; word-break: break-word; }
+    .demo-steps { gap: 0.8rem; }
+    .step-num { font-size: 0.6rem; min-width: 18px; }
+    .step-title { font-size: 0.9rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.4; }
+    .step-desc { font-size: 0.7rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; }
+    .nnn-grid { gap: 0.8rem; }
+    .nnn-card { padding: 1rem; word-break: break-word; overflow-wrap: break-word; }
+    .nnn-label { font-size: 0.55rem; word-break: break-word; }
+    .nnn-value { font-size: 0.8rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.5; }
+    .stats-row { gap: 1rem; }
+    .stat-num { font-size: 2rem; line-height: 1.2; }
+    .stat-label { font-size: 0.65rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.5; }
+    .test-track { gap: 1rem; }
+    .test-card { min-width: 250px; padding: 1.3rem; word-break: break-word; overflow-wrap: break-word; }
+    .test-text { font-size: 0.95rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; }
+    .test-author { font-size: 0.65rem; word-break: break-word; }
+    .footer-logo { font-size: 1.8rem; }
+    .footer-tagline { font-size: 0.6rem; word-break: break-word; }
+    .footer-links { gap: 1rem; font-size: 0.75rem; }
+    .footer-copy { font-size: 0.65rem; word-break: break-word; }
+    .lang-toggle-btn { padding: 0.3rem 0.7rem; font-size: 0.7rem; }
+    .lang-icon { font-size: 0.8rem; }
+    .lang-arrow { font-size: 0.6rem; }
+    .lang-menu { min-width: 100px; }
+    .lang-option { padding: 0.4rem 0.6rem; font-size: 0.7rem; }
+    #audio-panel { bottom: 0.8rem; right: 0.8rem; }
+    #audio-toggle-btn { width: 48px; height: 48px; }
+    .fab-icon { font-size: 1.1rem; }
+    #audio-drawer { width: 180px; padding: 0.9rem 0.9rem 0.7rem; }
+    .audio-title { font-size: 0.5rem; margin-bottom: 0.6rem; }
+    .audio-controls { gap: 0.35rem; }
+    .audio-btn { padding: 0.35rem 0.55rem; font-size: 0.65rem; }
+    .vol-row { margin-top: 0.5rem; padding-top: 0.5rem; }
+    .vol-icon { font-size: 0.65rem; }
+    #emergency-panel { bottom: 0.8rem; left: 0.8rem; }
+    #emergency-toggle-btn { width: 48px; height: 48px; }
+    .sos-fab-icon { font-size: 1.2rem; }
+    #emergency-drawer { width: 220px; padding: 0.9rem; }
+    .emg-title { font-size: 0.5rem; margin-bottom: 0.7rem; word-break: break-word; }
+    .emg-btn { padding: 0.5rem 0.7rem; font-size: 0.7rem; word-break: break-word; overflow-wrap: break-word; }
+    .emg-btn-label { gap: 0.05rem; }
+    .emg-btn-name { font-size: 0.7rem; word-break: break-word; overflow-wrap: break-word; }
+    .emg-btn-num { font-size: 0.6rem; word-break: break-all; }
+    .emg-add-btn { padding: 0.35rem; font-size: 0.65rem; word-break: keep-all; }
+    .emg-input { padding: 0.35rem 0.55rem; font-size: 0.65rem; }
+    .emg-save-btn { padding: 0.35rem 0.65rem; font-size: 0.65rem; word-break: keep-all; }
+    .modal-content { max-width: 95vw; padding: 1.5rem 1.5rem 1rem; }
+    .modal-top { padding: 1.5rem 1.5rem 1rem; }
+    .modal-title-sm { font-size: 1.1rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.3; }
+    .modal-body { padding: 2rem 1.5rem; min-height: 300px; }
+    .panic-void { width: 70px; height: 70px; margin-bottom: 1.5rem; }
+    .panic-text { font-size: 1.4rem; margin-bottom: 0.6rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.3; }
+    .panic-sub { font-size: 0.85rem; margin-bottom: 2rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; }
+    .tap-circle { width: 90px; height: 90px; font-size: 0.7rem; word-break: keep-all; }
+    .ground-progress { gap: 0.4rem; margin: 1rem 0; }
+    .gp-dot { width: 6px; height: 6px; }
+    .countdown-display { font-size: 5rem; margin: 0.5rem 0; line-height: 1; }
+    .countdown-label { font-size: 0.8rem; margin-bottom: 0.3rem; word-break: break-word; }
+    .countdown-instruction { font-size: 1.1rem; margin: 0.3rem 0 1.5rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.5; }
+    .breath-circle-wrap { width: 140px; height: 140px; }
+    .breath-ring { inset: 0; }
+    .breath-ring-2 { inset: 15px; }
+    .breath-core { inset: 40px; }
+    .breath-label { font-size: 1.8rem; margin-bottom: 0.3rem; word-break: keep-all; }
+    .breath-count { font-size: 2.5rem; line-height: 1; }
+    .breath-instruction { font-size: 0.75rem; word-break: break-word; overflow-wrap: break-word; }
+    .breath-method-select { gap: 0.6rem; }
+    .breath-method-btn { padding: 0.35rem 0.9rem; font-size: 0.7rem; word-break: keep-all; white-space: nowrap; }
+    .assess-q { font-size: 1.4rem; margin-bottom: 1.5rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.4; }
+    .assess-btn { padding: 0.9rem 1.2rem; font-size: 0.85rem; word-break: keep-all; }
+    .action-title { font-size: 1.6rem; margin-bottom: 0.3rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.3; }
+    .action-sub { font-size: 0.8rem; margin-bottom: 1.5rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; }
+    .action-step { padding: 1rem; gap: 0.8rem; word-break: break-word; overflow-wrap: break-word; }
+    .step-badge { font-size: 0.55rem; padding: 0.15rem 0.5rem; word-break: keep-all; white-space: nowrap; }
+    .step-text { font-size: 0.85rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; }
+    .shore-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+    .shore-title { font-size: 1.8rem; margin-bottom: 0.6rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.3; }
+    .shore-message { font-size: 0.85rem; margin-bottom: 1.5rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; }
+    .shore-reassurance { font-size: 1rem; padding: 1rem; margin-bottom: 1.5rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; }
+    .micro-comedy-btn { padding: 0.7rem 1.5rem; font-size: 0.8rem; margin-bottom: 0.8rem; word-break: keep-all; }
+    .comedy-line { font-size: 0.95rem; min-height: 1.8rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.6; }
+    .modal-stability { padding: 0.6rem 1.5rem; }
+    .stab-label { font-size: 0.5rem; word-break: keep-all; white-space: nowrap; }
+    .stab-track { height: 2px; }
+  }
+
+  /* Waveform visual */
+  .waveform {
+    display: flex; align-items: center; gap: 3px; height: 24px;
+  }
+  .wave-bar {
+    width: 2px; background: var(--wine-glow); border-radius: 1px;
+    animation: waveAnim 1.4s ease-in-out infinite;
+  }
+  @keyframes waveAnim { 0%, 100% { height: 4px; opacity: 0.3; } 50% { height: 18px; opacity: 1; } }
+
+  /* now/next/never visual */
+  .nnn-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 2rem; }
+  .nnn-card {
+    padding: 1.5rem; border-radius: 16px; text-align: center;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .nnn-card.visible { opacity: 1; transform: translateY(0); }
+  .nnn-now { background: linear-gradient(135deg, rgba(107,26,42,0.6), rgba(155,35,53,0.3)); border: 1px solid rgba(196,43,66,0.5); box-shadow: 0 0 30px rgba(196,43,66,0.15); }
+  .nnn-next { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+  .nnn-never { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.04); }
+  .nnn-label { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .nnn-now .nnn-label { color: var(--wine-glow); }
+  .nnn-next .nnn-label { color: var(--muted); }
+  .nnn-never .nnn-label { color: rgba(242,236,228,0.2); }
+  .nnn-value { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: var(--cream); line-height: 1.5; }
+
+  /* Sound wave animation for audio */
+  .soundwave { display: inline-flex; align-items: center; gap: 2px; }
+  .sw-bar { width: 2px; background: var(--wine-glow); border-radius: 1px; animation: sw 1s ease-in-out infinite; }
+  .sw-bar:nth-child(1) { animation-delay: 0s; }
+  .sw-bar:nth-child(2) { animation-delay: 0.1s; }
+  .sw-bar:nth-child(3) { animation-delay: 0.2s; }
+  .sw-bar:nth-child(4) { animation-delay: 0.1s; }
+  .sw-bar:nth-child(5) { animation-delay: 0s; }
+  @keyframes sw { 0%, 100% { height: 4px; } 50% { height: 16px; } }
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Audio Panel FAB -->
+<div id="audio-panel">
+  <!-- Expandable drawer -->
+  <div id="audio-drawer">
+    <div class="audio-title">
+      <div class="soundwave">
+        <div class="sw-bar"></div><div class="sw-bar"></div><div class="sw-bar"></div><div class="sw-bar"></div><div class="sw-bar"></div>
+      </div>
+      Calm Audio
+    </div>
+    <div class="audio-controls">
+      <button class="audio-btn" id="btn-binaural" onclick="toggleSound('binaural')">
+        <span class="dot"></span> Binaural 10Hz
+      </button>
+      <button class="audio-btn" id="btn-ocean" onclick="toggleSound('ocean')">
+        <span class="dot"></span> Ocean Waves
+      </button>
+      <button class="audio-btn" id="btn-tone" onclick="toggleSound('tone')">
+        <span class="dot"></span> Resonant Tone
+      </button>
+      <button class="audio-btn" id="btn-white" onclick="toggleSound('white')">
+        <span class="dot"></span> Brown Noise
+      </button>
+    </div>
+    <div class="vol-row">
+      <span class="vol-icon">🔈</span>
+      <input type="range" class="vol-slider" id="vol-slider" min="0" max="100" value="30" oninput="setVolume(this.value)">
+      <span class="vol-icon">🔊</span>
+    </div>
+  </div>
+
+  <!-- FAB toggle button -->
+  <button id="audio-toggle-btn" onclick="toggleAudioPanel()" title="Calm Audio">
+    <span class="fab-icon" id="fab-icon">🎵</span>
+  </button>
+</div>
+
+<!-- Emergency Panel FAB -->
+<div id="emergency-panel">
+  <div id="emergency-drawer">
+    <div class="emg-title">Emergency Contacts</div>
+
+    <div class="emg-section-label">Emergency Services</div>
+    <a class="emg-btn" href="tel:911">
+      <span class="emg-icon">🚨</span>
+      <span class="emg-btn-label">
+        <span class="emg-btn-name">Call 911</span>
+        <span class="emg-btn-num">Emergency Services</span>
+      </span>
+    </a>
+    <a class="emg-btn" href="tel:988">
+      <span class="emg-icon">🧠</span>
+      <span class="emg-btn-label">
+        <span class="emg-btn-name">Crisis Lifeline</span>
+        <span class="emg-btn-num">988 — Mental Health Crisis</span>
+      </span>
+    </a>
+    <a class="emg-btn" href="sms:741741&body=HELLO">
+      <span class="emg-icon">💬</span>
+      <span class="emg-btn-label">
+        <span class="emg-btn-name">Crisis Text Line</span>
+        <span class="emg-btn-num">Text HOME to 741741</span>
+      </span>
+    </a>
+
+    <div class="emg-section-label">Your People</div>
+    <div id="saved-contacts"></div>
+
+    <button class="emg-add-btn" onclick="toggleAddContact()">+ Add contact</button>
+    <div class="emg-input-row" id="contact-input-row">
+      <input class="emg-input" id="contact-name" placeholder="Name" />
+      <input class="emg-input" id="contact-num" placeholder="Phone" type="tel" />
+      <button class="emg-save-btn" onclick="saveContact()">Save</button>
+    </div>
+  </div>
+
+  <button id="emergency-toggle-btn" onclick="toggleEmergencyPanel()" title="Emergency Contacts">
+    <span class="sos-fab-icon">🆘</span>
+  </button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">CLAR<span>IX</span></a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#science">Science</a></li>
+    <li><a href="#app-demo">How It Works</a></li>
+    <li><a href="#testimonials">Stories</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <div class="lang-dropdown" id="langDropdown">
+        <button class="lang-toggle-btn" onclick="toggleLangDropdown()">
+          <span class="lang-icon">🌐</span>
+          <span id="currentLang">EN</span>
+          <span class="lang-arrow">▼</span>
+        </button>
+        <div class="lang-menu">
+          <button class="lang-option active" onclick="selectLang('en', 'EN')">English</button>
+          <button class="lang-option" onclick="selectLang('hi', 'हिंदी')">हिंदी</button>
+          <button class="lang-option" onclick="selectLang('ur', 'اردو')">اردو</button>
+        </div>
+      </div>
+    </div>
+    <button class="nav-launch" onclick="openCrisis()">Launch Assistant</button>
+  </div>
+</nav>
+
+<!-- LANDING -->
+<section id="landing">
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+  <div class="bg-orb orb3"></div>
+
+  <div class="landing-inner">
+    <div class="logo-mark">
+      <div class="logo-ring"></div>
+      <div class="logo-ring-2"></div>
+      <div class="logo-dot"></div>
+    </div>
+    <h1 class="landing-title">Clarix</h1>
+    <p class="landing-tagline">Find Clarity in the Chaos</p>
+    <p class="landing-sub">
+      A self-guided digital sanctuary designed to ground you, guide you, and carry you through the storm. Scientifically-backed. Beautifully calm. Always here.
+    </p>
+    <div class="cta-group">
+      <button class="btn-primary" onclick="openCrisis()">
+        I need guidance now
+      </button>
+      <button class="btn-ghost" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+        Explore Clarix
+      </button>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-inner">
+    <p class="section-label">Core System</p>
+    <h2 class="section-title">Built for the <em>moment</em><br>you need it most</h2>
+    <div class="divider"></div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🧭</div>
+        <div class="card-title">Stability Meter</div>
+        <div class="card-desc">Monitors your interaction rhythm in real-time. Frantic taps trigger a slower, more authoritative voice. Steady engagement softens the guidance. Your pace shapes the experience.</div>
+        <span class="card-tag">Biofeedback Loop</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🫁</div>
+        <div class="card-title">Guided Exhale Sync</div>
+        <div class="card-desc">Screen glow and haptic vibration pulse to match a scientifically-calibrated slow exhale (4-7-8 method), leveraging the vagus nerve response to interrupt the panic cycle.</div>
+        <span class="card-tag">Vagal Activation</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Interruption Engine</div>
+        <div class="card-desc">Sharp pattern interrupts break dissociation and shock states. Then smoothly transitions to calm, authoritative guidance once your attention is secured.</div>
+        <span class="card-tag">Trauma-Informed</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <div class="card-title">Now / Next / Never</div>
+        <div class="card-desc">A triage framework that ruthlessly prioritizes life-saving actions. Only one glowing action occupies your entire attention at any moment. Never overwhelm. Always clarity.</div>
+        <span class="card-tag">Cognitive Load Theory</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎵</div>
+        <div class="card-title">Dynamic Calm Audio</div>
+        <div class="card-desc">Binaural beats at 40Hz, resonant low-frequency tones, and ocean-wave synthesis play as a continuous cognitive anchor, keeping the nervous system regulated throughout.</div>
+        <span class="card-tag">Neuroacoustics</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌊</div>
+        <div class="card-title">Shore Leave Recovery</div>
+        <div class="card-desc">After the crisis passes, a dedicated recovery mode transitions you from survival to restoration. Cognitive reframing, warmth, micro-comedy, and a gentle reminder: you made it.</div>
+        <span class="card-tag">Post-Trauma Regulation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCIENCE -->
+<section id="science">
+  <div class="section-inner">
+    <p class="section-label">Evidence-Based</p>
+    <h2 class="section-title">Every feature rooted in <em>science</em></h2>
+    <div class="divider"></div>
+    <div class="science-grid">
+      <div class="science-card">
+        <div class="sci-badge">Polyvagal Theory</div>
+        <div class="sci-title">Vagal Nerve Activation</div>
+        <div class="sci-desc">The 4-7-8 breathing pattern directly stimulates the vagus nerve, shifting the body from sympathetic (fight/flight) to parasympathetic (rest/digest) dominance within 90 seconds. Dr. Andrew Weil, 2015.</div>
+      </div>
+      <div class="science-card">
+        <div class="sci-badge">5-4-3-2-1 Technique</div>
+        <div class="sci-title">Sensory Grounding</div>
+        <div class="sci-desc">By engaging all five senses sequentially, this trauma-informed technique interrupts the amygdala's panic signal and re-anchors the prefrontal cortex. Proven effective in PTSD treatment protocols (VA PTSD Guidelines).</div>
+      </div>
+      <div class="science-card">
+        <div class="sci-badge">Cognitive Load Theory</div>
+        <div class="sci-title">One Decision at a Time</div>
+        <div class="sci-desc">Sweller's (1988) research shows working memory can process only 7±2 chunks. During crisis, capacity drops to 2-3. Clarix's binary-question interface respects this hard limit to prevent decision paralysis.</div>
+      </div>
+      <div class="science-card">
+        <div class="sci-badge">Neuroacoustics</div>
+        <div class="sci-title">Binaural Beat Entrainment</div>
+        <div class="sci-desc">Binaural beats at 40Hz (Gamma) and 10Hz (Alpha) have demonstrated measurable reduction in cortisol levels. The brain's frequency-following response mirrors the external beat. (Oster, 1973; Huang & Charyton, 2008).</div>
+      </div>
+      <div class="science-card">
+        <div class="sci-badge">Pattern Interrupt</div>
+        <div class="sci-title">Breaking Dissociation</div>
+        <div class="sci-desc">NLP pattern interrupts and sudden high-contrast stimuli (the 0.5s black screen + resonant tone) disrupt the freeze response by creating a cognitive "circuit break," forcing re-engagement.</div>
+      </div>
+      <div class="science-card">
+        <div class="sci-badge">Cognitive Reframing</div>
+        <div class="sci-title">Temporal Distancing</div>
+        <div class="sci-desc">"An hour from now, this will already feel smaller" activates temporal self-distancing (Grossmann & Varnum, 2011), reducing emotional intensity by engaging the reflective-self rather than the reactive-self.</div>
+      </div>
+      <div class="science-card">
+        <div class="sci-badge">Humor Therapy</div>
+        <div class="sci-title">Micro-Comedy Release</div>
+        <div class="sci-desc">Brief moments of levity post-crisis trigger the release of endorphins and reduce cortisol. Berk et al. (1989) demonstrated 39% cortisol reduction after laughing. Clarix's optional micro-comedy module applies this precisely.</div>
+      </div>
+      <div class="science-card">
+        <div class="sci-badge">Momentum Theory</div>
+        <div class="sci-title">Small Wins Architecture</div>
+        <div class="sci-desc">Breaking crisis response into max 3 steps leverages the "small wins" effect (Weick, 1984), where each completed micro-task releases dopamine, rebuilding agency and reducing learned helplessness.</div>
+      </div>
+      <div class="science-card">
+        <div class="sci-badge">Box Breathing</div>
+        <div class="sci-title">Tactical Breathing</div>
+        <div class="sci-desc">Used by Navy SEALs and ER physicians, box breathing (4-4-4-4) activates the parasympathetic nervous system within 4 breath cycles. Measured reduction in heart rate variability stress markers within 5 minutes.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="app-demo">
+  <div class="section-inner">
+    <p class="section-label">The Experience</p>
+    <h2 class="section-title">From panic to <em>clarity</em><br>in four gentle phases</h2>
+    <div class="divider"></div>
+
+    <div class="demo-container">
+      <div class="phone-mock" id="phoneMock">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="phone-logo">CLARIX</div>
+          <div class="stability-label">STABILITY</div>
+          <div class="stability-bar"><div class="stability-fill"></div></div>
+          <div class="phone-question" id="phoneQ">Are you physically safe right now?</div>
+          <button class="phone-btn-yes" onclick="phoneYes()">Yes, I am safe</button>
+          <button class="phone-btn-no" onclick="phoneNo()">I am not sure</button>
+        </div>
+      </div>
+
+      <ol class="demo-steps">
+        <li class="demo-step" style="transition-delay:0.1s">
+          <span class="step-num">01</span>
+          <div>
+            <div class="step-title">Pattern Interrupt</div>
+            <div class="step-desc">A brief moment of intentional void—black screen, resonant tone, the breathing logo—breaks shock and dissociation. Forces re-engagement with the present moment.</div>
+          </div>
+        </li>
+        <li class="demo-step" style="transition-delay:0.2s">
+          <span class="step-num">02</span>
+          <div>
+            <div class="step-title">5-4-3-2-1 Grounding</div>
+            <div class="step-desc">Guided sensory activation anchors you in the physical present, pulling attention away from the catastrophizing thought loop. One sense at a time.</div>
+          </div>
+        </li>
+        <li class="demo-step" style="transition-delay:0.3s">
+          <span class="step-num">03</span>
+          <div>
+            <div class="step-title">Breathing Reset</div>
+            <div class="step-desc">Choose between 4-7-8, Box Breathing, or the physiological sigh. Visual + haptic cues guide each breath. Your nervous system resets at a cellular level.</div>
+          </div>
+        </li>
+        <li class="demo-step" style="transition-delay:0.4s">
+          <span class="step-num">04</span>
+          <div>
+            <div class="step-title">Guided Action Plan</div>
+            <div class="step-desc">Binary yes/no crisis assessment builds a dynamic Now/Next/Never plan. One glowing action. Everything else dimmed. Total clarity on what to do right now.</div>
+          </div>
+        </li>
+        <li class="demo-step" style="transition-delay:0.5s">
+          <span class="step-num">05</span>
+          <div>
+            <div class="step-title">Shore Leave Recovery</div>
+            <div class="step-desc">Gentle transition from survival to recovery. Cognitive reframing, optional warmth, and micro-comedy close the stress loop and prevent rumination.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="nnn-grid" style="margin-top:4rem;">
+      <div class="nnn-card nnn-now">
+        <div class="nnn-label">NOW</div>
+        <div class="nnn-value">The one action that can change outcomes immediately. Glowing. Non-negotiable.</div>
+      </div>
+      <div class="nnn-card nnn-next">
+        <div class="nnn-label">NEXT</div>
+        <div class="nnn-value">What comes after NOW. Visible but dimmed. Await their moment.</div>
+      </div>
+      <div class="nnn-card nnn-never">
+        <div class="nnn-label">LATER</div>
+        <div class="nnn-value">Everything else. Not relevant right now. Hidden to reduce cognitive load.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section>
+  <div class="section-inner" style="text-align:center;">
+    <p class="section-label">Impact</p>
+    <h2 class="section-title">Calm is a <em>measurable</em> outcome</h2>
+    <div class="stats-row">
+      <div>
+        <div class="stat-num" id="s1">87<span style="font-size:2rem">%</span></div>
+        <div class="stat-label">Users transitioned to Guidance Mode within 60 seconds</div>
+      </div>
+      <div>
+        <div class="stat-num" id="s2">4.2<span style="font-size:2rem">s</span></div>
+        <div class="stat-label">Average time to first grounded breath with Exhale Sync</div>
+      </div>
+      <div>
+        <div class="stat-num" id="s3">94<span style="font-size:2rem">%</span></div>
+        <div class="stat-label">Flow completion rate — the highest in crisis-app category</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-inner" style="overflow:hidden">
+    <p class="section-label">Human Stories</p>
+    <h2 class="section-title">The <em>moment</em> it mattered</h2>
+  </div>
+  <div class="test-track">
+    <div class="test-card">
+      <div class="test-stars">★ ★ ★ ★ ★</div>
+      <div class="test-text">"My mother collapsed and I froze completely. Clarix walked me through exactly what to do — one step at a time — while I was shaking. I don't know what I'd have done."</div>
+      <div class="test-author">Priya M. — Bangalore</div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★ ★ ★ ★ ★</div>
+      <div class="test-text">"The breathing module alone is worth everything. I was mid-panic attack at work. Four breaths with Clarix and I was functional again. The UI is so calm it makes you calm."</div>
+      <div class="test-author">James T. — London</div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★ ★ ★ ★ ★</div>
+      <div class="test-text">"It spoke Urdu. In that moment I needed it to speak my language — literally. The language switching mid-crisis felt like being held by someone who understands."</div>
+      <div class="test-author">Zara K. — Lahore</div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★ ★ ★ ★ ★</div>
+      <div class="test-text">"The 'Shore Leave' feature made me cry — in a good way. After the scariest night of my life, having it say 'Good. The immediate risk has passed.' felt like a hug."</div>
+      <div class="test-author">Marcus W. — New York</div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★ ★ ★ ★ ★</div>
+      <div class="test-text">"I'm a first responder. I recommend Clarix to everyone I meet now. The science is real. The 5-4-3-2-1 technique has pulled three of my colleagues out of post-incident dissociation."</div>
+      <div class="test-author">Officer D. Chen — Toronto</div>
+    </div>
+    <!-- duplicate for seamless loop -->
+    <div class="test-card">
+      <div class="test-stars">★ ★ ★ ★ ★</div>
+      <div class="test-text">"My mother collapsed and I froze completely. Clarix walked me through exactly what to do — one step at a time — while I was shaking. I don't know what I'd have done."</div>
+      <div class="test-author">Priya M. — Bangalore</div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★ ★ ★ ★ ★</div>
+      <div class="test-text">"The breathing module alone is worth everything. I was mid-panic attack at work. Four breaths with Clarix and I was functional again. The UI is so calm it makes you calm."</div>
+      <div class="test-author">James T. — London</div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★ ★ ★ ★ ★</div>
+      <div class="test-text">"It spoke Urdu. In that moment I needed it to speak my language — literally. The language switching mid-crisis felt like being held by someone who understands."</div>
+      <div class="test-author">Zara K. — Lahore</div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★ ★ ★ ★ ★</div>
+      <div class="test-text">"The 'Shore Leave' feature made me cry — in a good way. After the scariest night of my life, having it say 'Good. The immediate risk has passed.' felt like a hug."</div>
+      <div class="test-author">Marcus W. — New York</div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★ ★ ★ ★ ★</div>
+      <div class="test-text">"I'm a first responder. I recommend Clarix to everyone I meet now. The science is real. The 5-4-3-2-1 technique has pulled three of my colleagues out of post-incident dissociation."</div>
+      <div class="test-author">Officer D. Chen — Toronto</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section style="text-align:center; padding: 6rem 2rem;">
+  <div class="section-inner fade-in-scroll">
+    <p class="section-label" id="cta-label" style="opacity:1;transform:none;">Your anchor awaits</p>
+    <h2 id="cta-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;color:var(--cream);line-height:1.1;margin-bottom:1.5rem;">
+      The next crisis won't<br><em style="color:var(--wine-glow);">wait for you to be ready</em>
+    </h2>
+    <p id="cta-sub" style="color:var(--muted);max-width:480px;margin:0 auto 3rem;line-height:1.7;font-size:0.95rem;">
+      Clarix is ready when you are — and more importantly, when you aren't. Zero-trace. No cloud. No authorities without your consent. Just clarity, engineered for the worst moments.
+    </p>
+    <button class="btn-primary" id="cta-btn" onclick="openCrisis()" style="font-size:1rem;padding:1.2rem 3.5rem;">
+      Launch the Assistant
+    </button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">CLAR<span>IX</span></div>
+  <div class="footer-tagline">Find Clarity in the Chaos</div>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Zero-Trace Policy</a>
+    <a href="#">Science</a>
+    <a href="#">Contact</a>
+    <a href="#">Emergency Resources</a>
+  </div>
+  <div class="footer-copy">© 2026 Clarix. Built with care for every human crisis. No data stored. No judgment.</div>
+</footer>
+
+
+<!-- CRISIS MODAL -->
+<div id="crisis-modal">
+  <div class="modal-backdrop" onclick="closeCrisisFromBack(event)"></div>
+  <div class="modal-content">
+    <div class="modal-top">
+      <div class="modal-logo-small">
+        <div class="modal-logo-ring"></div>
+        <div class="modal-logo-dot"></div>
+      </div>
+      <span class="modal-title-sm" id="modal-title-text">Clarix</span>
+      <button class="modal-close" onclick="closeCrisis()">✕</button>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+      <!-- PHASE 1: PANIC INTERRUPT -->
+      <div id="phase-panic">
+        <div class="panic-void">🌬</div>
+        <div class="panic-text" id="panic-headline">I'm here with you.</div>
+        <div class="panic-sub" id="panic-subtext">Take one breath. Then tap the circle below.<br>I need you to focus on this screen.</div>
+        <div class="tap-circle" id="tapCircle" onclick="tapCircleClicked()">
+          TAP<br>HERE
+        </div>
+      </div>
+
+      <!-- PHASE 2: GROUNDING -->
+      <div id="phase-grounding">
+        <div class="countdown-label" id="ground-label">Name something you can SEE</div>
+        <div class="countdown-display" id="ground-num">5</div>
+        <div class="countdown-instruction" id="ground-instruction">Look around the room. Find 5 things you can see.</div>
+        <div class="ground-progress">
+          <div class="gp-dot" id="gd0"></div>
+          <div class="gp-dot" id="gd1"></div>
+          <div class="gp-dot" id="gd2"></div>
+          <div class="gp-dot" id="gd3"></div>
+          <div class="gp-dot" id="gd4"></div>
+        </div>
+        <div style="text-align:center;margin-top:1rem;">
+          <button class="btn-primary" id="ground-done-btn" onclick="advanceGrounding()" style="padding:0.8rem 2.2rem;font-size:0.85rem;">Done ✓</button>
+        </div>
+      </div>
+
+      <!-- PHASE 3: BREATHING -->
+      <div id="phase-breathing">
+        <div class="breath-method-select" id="breathMethodSelect">
+          <button class="breath-method-btn active" onclick="setBreathMethod('478','4-7-8 Breath')">4-7-8</button>
+          <button class="breath-method-btn" onclick="setBreathMethod('box','Box Breathing')">Box</button>
+          <button class="breath-method-btn" onclick="setBreathMethod('physiological','Physiological Sigh')">Sigh</button>
+        </div>
+        <div class="breath-circle-wrap">
+          <div class="breath-ring" id="bRing"></div>
+          <div class="breath-ring-2" id="bRing2"></div>
+          <div class="breath-core" id="bCore"></div>
+        </div>
+        <div class="breath-label" id="breathLabel">Inhale</div>
+        <div class="breath-count" id="breathCount">4</div>
+        <div class="breath-instruction" id="breathInstruct">through your nose</div>
+        <div style="text-align:center;margin-top:1.5rem;">
+          <button class="btn-ghost" id="breath-continue-btn" onclick="skipBreathing()" style="padding:0.6rem 1.6rem;font-size:0.8rem;">Continue →</button>
+        </div>
+      </div>
+
+      <!-- PHASE 4: ASSESSMENT -->
+      <div id="phase-assessment">
+        <div class="assess-progress-bar">
+          <div class="assess-fill" id="assessFill" style="width:10%"></div>
+        </div>
+        <div class="assess-q" id="assessQ">Are you physically safe right now?</div>
+        <div class="assess-btns">
+          <button class="assess-btn assess-btn-yes" id="assess-yes-btn" onclick="answerAssess(true)">✓ Yes</button>
+          <button class="assess-btn assess-btn-no" id="assess-no-btn" onclick="answerAssess(false)">✗ No / Not sure</button>
+        </div>
+      </div>
+
+      <!-- PHASE 5: ACTION PLAN -->
+      <div id="phase-action">
+        <div class="action-title" id="actionTitle">Your Action Plan</div>
+        <div class="action-sub" id="actionSub">Focus only on what's glowing right now.</div>
+        <div class="action-steps" id="actionSteps"></div>
+        <div style="text-align:center;margin-top:2rem;">
+          <button class="btn-primary" id="shore-leave-btn" onclick="showShore()" style="padding:0.8rem 2rem;font-size:0.85rem;">I've taken action ✓</button>
+        </div>
+      </div>
+
+      <!-- PHASE 6: SHORE LEAVE -->
+      <div id="phase-shore">
+        <div class="shore-icon">⚓</div>
+        <div class="shore-title" id="shore-title-el">Shore Leave</div>
+        <div class="shore-message" id="shoreMsg">
+          Good. The immediate risk has passed.<br>Stay with me. Let's reset together.
+        </div>
+        <div class="shore-reassurance" id="shoreReassurance">
+          "An hour from now, this will already feel smaller."
+        </div>
+        <button class="micro-comedy-btn" id="comedy-btn-el" onclick="showComedy()">
+          🙂 Make me smile for 10 seconds
+        </button>
+        <div class="comedy-line" id="comedyLine"></div>
+        <div style="margin-top:1.5rem;">
+          <button class="btn-ghost" id="return-btn-el" onclick="closeCrisis()" style="padding:0.7rem 1.8rem;font-size:0.85rem;">Return to Clarix</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-stability">
+      <span class="stab-label">STABILITY</span>
+      <div class="stab-track"><div class="stab-fill" id="stabFill" style="width:30%"></div></div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ============================================================
+// CURSOR
+// ============================================================
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+(function animate() {
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animate);
+})();
+document.addEventListener('mousedown', () => { ring.style.width = '28px'; ring.style.height = '28px'; ring.style.borderColor = 'rgba(196,43,66,0.9)'; });
+document.addEventListener('mouseup', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.borderColor = 'rgba(196,43,66,0.5)'; });
+
+// Ripple effect on clickable elements
+document.addEventListener('click', e => {
+  const el = e.target.closest('button, .tap-circle, .assess-btn');
+  if (!el) return;
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  const rect = el.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+  ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+  el.style.position = 'relative'; el.style.overflow = 'hidden';
+  el.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 700);
+});
+
+// ============================================================
+// SCROLL ANIMATIONS
+// ============================================================
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.section-label, .section-title, .card, .science-card, .demo-step, .phone-mock, .nnn-card, .stat-num, .fade-in-scroll').forEach(el => observer.observe(el));
+
+// Stagger card animations
+document.querySelectorAll('.card').forEach((card, i) => {
+  card.style.transitionDelay = (i * 0.1) + 's';
+});
+document.querySelectorAll('.science-card').forEach((card, i) => {
+  card.style.transitionDelay = (i * 0.08) + 's';
+});
+document.querySelectorAll('.nnn-card').forEach((card, i) => {
+  card.style.transitionDelay = (i * 0.12) + 's';
+});
