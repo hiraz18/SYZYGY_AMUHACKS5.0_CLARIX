@@ -371,3 +371,19 @@
   .step-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; margin-bottom: 0.3rem; color: var(--cream); }
   .step-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.65; }
 
+  /* --- SCIENCE SECTION --- */
+  #science { background: linear-gradient(to bottom, transparent, rgba(61,14,24,0.15), transparent); }
+  .science-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; margin-top: 4rem; }
+  .science-card {
+    padding: 1.8rem; border-radius: 16px;
+    background: linear-gradient(135deg, rgba(107,26,42,0.1) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid rgba(107,26,42,0.2);
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .science-card.visible { opacity: 1; transform: translateY(0); }
+  .science-card:hover { border-color: rgba(196,43,66,0.3); background: linear-gradient(135deg, rgba(107,26,42,0.15) 0%, rgba(255,255,255,0.03) 100%); }
+  .sci-badge { font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.25em; color: var(--wine-glow); text-transform: uppercase; margin-bottom: 0.8rem; }
+  .sci-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--cream); margin-bottom: 0.6rem; }
+  .sci-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.7; }
+
