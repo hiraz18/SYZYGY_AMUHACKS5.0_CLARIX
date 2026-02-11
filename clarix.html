@@ -292,3 +292,82 @@
     letter-spacing: 0.2em; color: var(--wine-glow); text-transform: uppercase;
   }
 
+  /* --- APP DEMO SECTION --- */
+  #app-demo {
+    background: radial-gradient(ellipse at center, rgba(61,14,24,0.3) 0%, transparent 70%);
+    position: relative;
+  }
+  .demo-container {
+    display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem;
+    align-items: center; margin-top: 4rem;
+  }
+  @media (max-width: 800px) { .demo-container { grid-template-columns: 1fr; } }
+
+  .phone-mock {
+    width: 280px; margin: 0 auto;
+    background: linear-gradient(175deg, #1a0e12 0%, #0d0709 100%);
+    border-radius: 40px; border: 1px solid rgba(107,26,42,0.4);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(196,43,66,0.1), inset 0 1px 0 rgba(255,255,255,0.05);
+    overflow: hidden; position: relative;
+    opacity: 0; transform: translateY(40px) rotate(-2deg);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .phone-mock.visible { opacity: 1; transform: translateY(0) rotate(0deg); }
+  .phone-notch { width: 100px; height: 28px; background: #0a0608; border-radius: 0 0 18px 18px; margin: 0 auto; position: relative; z-index: 2; }
+  .phone-screen {
+    padding: 1.5rem 1.2rem 2rem; min-height: 520px;
+    display: flex; flex-direction: column; align-items: center;
+    position: relative;
+  }
+  .phone-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--cream); letter-spacing: 0.15em; margin-bottom: 2rem; text-align: center; }
+  .phone-question {
+    font-size: 1rem; color: var(--cream); text-align: center; line-height: 1.6;
+    margin-bottom: 2rem; font-weight: 300;
+  }
+  .phone-btn-yes {
+    width: 100%; padding: 0.9rem; margin-bottom: 0.8rem;
+    background: linear-gradient(135deg, var(--wine-bright), var(--wine-glow));
+    border: none; border-radius: 16px; color: white;
+    font-size: 0.9rem; font-weight: 500; cursor: none;
+    box-shadow: 0 4px 20px rgba(196,43,66,0.4);
+    animation: softPulse 3s ease-in-out infinite;
+  }
+  .phone-btn-no {
+    width: 100%; padding: 0.9rem;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; color: var(--cream); font-size: 0.9rem; cursor: none;
+  }
+  @keyframes softPulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(196,43,66,0.4); }
+    50% { box-shadow: 0 4px 40px rgba(196,43,66,0.7), 0 0 0 4px rgba(196,43,66,0.1); }
+  }
+  .stability-bar {
+    width: 100%; height: 3px; background: rgba(255,255,255,0.08);
+    border-radius: 2px; margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .stability-fill {
+    height: 100%; width: 72%;
+    background: linear-gradient(90deg, var(--wine), var(--wine-glow));
+    border-radius: 2px;
+    animation: stabAnim 4s ease-in-out infinite;
+  }
+  @keyframes stabAnim { 0%, 100% { width: 60%; } 50% { width: 80%; } }
+  .stability-label { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.2em; color: var(--wine-glow); margin-bottom: 0.4rem; text-align: left; width: 100%; }
+
+  .demo-steps { list-style: none; }
+  .demo-step {
+    display: flex; gap: 1.2rem; padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(107,26,42,0.2);
+    opacity: 0; transform: translateX(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .demo-step.visible { opacity: 1; transform: translateX(0); }
+  .step-num {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    color: var(--wine-glow); padding-top: 0.2rem;
+    min-width: 24px;
+  }
+  .step-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; margin-bottom: 0.3rem; color: var(--cream); }
+  .step-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.65; }
+
