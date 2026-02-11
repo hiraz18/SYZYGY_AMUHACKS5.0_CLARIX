@@ -1697,3 +1697,886 @@ document.querySelectorAll('.science-card').forEach((card, i) => {
 document.querySelectorAll('.nnn-card').forEach((card, i) => {
   card.style.transitionDelay = (i * 0.12) + 's';
 });
+ 
+
+// ============================================================
+// WEB AUDIO — SOUND SYSTEM
+// ============================================================
+let audioCtx = null;
+const activeSounds = {};
+
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+let masterGain = null;
+function getMaster() {
+  const ctx = getCtx();
+  if (!masterGain) {
+    masterGain = ctx.createGain();
+    masterGain.gain.value = 0.3;
+    masterGain.connect(ctx.destination);
+  }
+  return masterGain;
+}
+
+function setVolume(val) {
+  if (masterGain) masterGain.gain.value = val / 100;
+}
+
+function createBinauralBeats(freq = 10) {
+  const ctx = getCtx();
+  const g = ctx.createGain(); g.gain.value = 0.15;
+  const left = ctx.createOscillator(); left.frequency.value = 200;
+  const right = ctx.createOscillator(); right.frequency.value = 200 + freq;
+  const merger = ctx.createChannelMerger(2);
+  const lGain = ctx.createGain(); const rGain = ctx.createGain();
+  lGain.gain.value = 1; rGain.gain.value = 1;
+  left.connect(lGain); right.connect(rGain);
+  lGain.connect(merger, 0, 0); rGain.connect(merger, 0, 1);
+  merger.connect(g); g.connect(getMaster());
+  left.start(); right.start();
+  return { stop: () => { try { left.stop(); right.stop(); g.disconnect(); } catch(e){} } };
+}
+
+function createResonantTone() {
+  const ctx = getCtx();
+  const g = ctx.createGain(); g.gain.value = 0;
+  const osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = 128;
+  const lfo = ctx.createOscillator(); lfo.frequency.value = 0.15;
+  const lfoGain = ctx.createGain(); lfoGain.gain.value = 0.08;
+  lfo.connect(lfoGain); lfoGain.connect(g.gain);
+  osc.connect(g); g.connect(getMaster());
+  osc.start(); lfo.start();
+  g.gain.linearRampToValueAtTime(0.2, ctx.currentTime + 2);
+  return { stop: () => { try { g.gain.linearRampToValueAtTime(0, ctx.currentTime + 1); setTimeout(() => { osc.stop(); lfo.stop(); g.disconnect(); }, 1100); } catch(e){} } };
+}
+
+function createOceanWaves() {
+  const ctx = getCtx();
+  const bufSize = ctx.sampleRate * 4;
+  const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1);
+  
+  const source = ctx.createBufferSource(); source.buffer = buf; source.loop = true;
+  const filter = ctx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 400;
+  const filter2 = ctx.createBiquadFilter(); filter2.type = 'highpass'; filter2.frequency.value = 80;
+  const lfo = ctx.createOscillator(); lfo.frequency.value = 0.08;
+  const lfoGain = ctx.createGain(); lfoGain.gain.value = 0.12;
+  const g = ctx.createGain(); g.gain.value = 0.18;
+  lfo.connect(lfoGain); lfoGain.connect(g.gain);
+  source.connect(filter); filter.connect(filter2); filter2.connect(g); g.connect(getMaster());
+  source.start(); lfo.start();
+  return { stop: () => { try { source.stop(); lfo.stop(); g.disconnect(); } catch(e){} } };
+}
+
+function createBrownNoise() {
+  const ctx = getCtx();
+  const bufSize = ctx.sampleRate * 4;
+  const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+  const data = buf.getChannelData(0);
+  let last = 0;
+  for (let i = 0; i < bufSize; i++) {
+    const white = Math.random() * 2 - 1;
+    data[i] = (last + (0.02 * white)) / 1.02;
+    last = data[i]; data[i] *= 3.5;
+  }
+  const source = ctx.createBufferSource(); source.buffer = buf; source.loop = true;
+  const g = ctx.createGain(); g.gain.value = 0.25;
+  source.connect(g); g.connect(getMaster());
+  source.start();
+  return { stop: () => { try { source.stop(); g.disconnect(); } catch(e){} } };
+}
+
+function toggleSound(type) {
+  const btn = document.getElementById('btn-' + type);
+  if (activeSounds[type]) {
+    activeSounds[type].stop();
+    delete activeSounds[type];
+    btn.classList.remove('active');
+  } else {
+    if (type === 'binaural') activeSounds[type] = createBinauralBeats(10);
+    else if (type === 'ocean') activeSounds[type] = createOceanWaves();
+    else if (type === 'tone') activeSounds[type] = createResonantTone();
+    else if (type === 'white') activeSounds[type] = createBrownNoise();
+    btn.classList.add('active');
+  }
+}
+
+function playPanicTone() {
+  const ctx = getCtx();
+  const osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = 220;
+  const g = ctx.createGain(); g.gain.value = 0.4;
+  osc.connect(g); g.connect(ctx.destination);
+  osc.start(); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
+  osc.stop(ctx.currentTime + 1.5);
+}
+
+function playBreathTone(isInhale) {
+  const ctx = getCtx();
+  const osc = ctx.createOscillator(); osc.type = 'sine';
+  osc.frequency.value = isInhale ? 256 : 192;
+  const g = ctx.createGain(); g.gain.value = 0;
+  osc.connect(g); g.connect(ctx.destination);
+  osc.start();
+  g.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.3);
+  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+  osc.stop(ctx.currentTime + 1.3);
+}
+
+function playSuccessTone() {
+  const ctx = getCtx();
+  [523, 659, 784].forEach((freq, i) => {
+    const osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = freq;
+    const g = ctx.createGain(); g.gain.value = 0.2;
+    osc.connect(g); g.connect(ctx.destination);
+    osc.start(ctx.currentTime + i * 0.15);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.15 + 0.6);
+    osc.stop(ctx.currentTime + i * 0.15 + 0.7);
+  });
+}
+
+// ============================================================
+// LANGUAGE SYSTEM — Full page translation
+// ============================================================
+const TRANSLATIONS = {
+  en: {
+    // Nav
+    navFeatures: "Features", navScience: "Science", navHow: "How It Works", navStories: "Stories", navLaunch: "Launch Assistant",
+    // Landing
+    landingTagline: "Find Clarity in the Chaos",
+    landingSub: "A self-guided digital sanctuary designed to ground you, guide you, and carry you through the storm. Scientifically-backed. Beautifully calm. Always here.",
+    ctaPrimary: "I need guidance now",
+    ctaSecondary: "Explore Clarix",
+    scrollHint: "Discover",
+    // Features section
+    featLabel: "Core System",
+    featTitle: "Built for the <em>moment</em><br>you need it most",
+    // Science section
+    sciLabel: "Evidence-Based",
+    sciTitle: "Every feature rooted in <em>science</em>",
+    // How it works
+    howLabel: "The Experience",
+    howTitle: "From panic to <em>clarity</em><br>in four gentle phases",
+    // Stats
+    statsLabel: "Impact",
+    statsTitle: "Calm is a <em>measurable</em> outcome",
+    // Testimonials
+    testLabel: "Human Stories",
+    testTitle: "The <em>moment</em> it mattered",
+    // CTA bottom
+    ctaLabel: "Your anchor awaits",
+    ctaTitle: "The next crisis won't<br><em>wait for you to be ready</em>",
+    ctaSub: "Clarix is ready when you are — and more importantly, when you aren't. Zero-trace. No cloud. No authorities without your consent. Just clarity, engineered for the worst moments.",
+    ctaBtn: "Launch the Assistant",
+    // Footer
+    footerTagline: "Find Clarity in the Chaos",
+    // Modal
+    panicHead: "I'm here with you.",
+    panicSub: "Take one breath. Then tap the circle below.\nI need you to focus on this screen.",
+    tapText: "TAP\nHERE",
+    groundDone: "Done ✓",
+    breathContinue: "Continue →",
+    shoreTitle: "Shore Leave",
+    shoreMsg: "Good. The immediate risk has passed.\nStay with me. Let's reset together.",
+    shoreReassurance: '"An hour from now, this will already feel smaller."',
+    comedyBtn: "🙂 Make me smile for 10 seconds",
+    returnBtn: "Return to Clarix",
+    shoreLeave: "I've taken action ✓",
+    // Assessment buttons
+    assessYes: "✓ Yes",
+    assessNo: "✗ No / Not sure",
+    // Emergency drawer
+    emgTitle: "Emergency Contacts",
+    emgServices: "Emergency Services",
+    emgYourPeople: "Your People",
+    emgAdd: "+ Add contact",
+    emgNamePlaceholder: "Name",
+    emgNumPlaceholder: "Phone",
+    emgSave: "Save",
+  },
+  hi: {
+    navFeatures: "विशेषताएँ", navScience: "विज्ञान", navHow: "कैसे काम करता है", navStories: "कहानियाँ", navLaunch: "सहायक शुरू करें",
+    landingTagline: "अराजकता में स्पष्टता पाएं",
+    landingSub: "एक स्व-निर्देशित डिजिटल अभयारण्य जो आपको स्थिर करने, मार्गदर्शन करने और तूफान से गुज़रने में मदद करता है।",
+    ctaPrimary: "मुझे अभी मार्गदर्शन चाहिए",
+    ctaSecondary: "Clarix जानें",
+    scrollHint: "खोजें",
+    featLabel: "मुख्य प्रणाली",
+    featTitle: "उस <em>क्षण</em> के लिए बनाया गया<br>जब आपको इसकी सबसे ज़्यादा ज़रूरत हो",
+    sciLabel: "साक्ष्य-आधारित",
+    sciTitle: "हर सुविधा <em>विज्ञान</em> में निहित",
+    howLabel: "अनुभव",
+    howTitle: "घबराहट से <em>स्पष्टता</em> तक<br>चार सौम्य चरणों में",
+    statsLabel: "प्रभाव",
+    statsTitle: "शांति एक <em>मापनीय</em> परिणाम है",
+    testLabel: "मानवीय कहानियाँ",
+    testTitle: "जब यह <em>मायने रखा</em>",
+    ctaLabel: "आपका लंगर आपका इंतज़ार करता है",
+    ctaTitle: "अगला संकट<br><em>आपके तैयार होने का इंतज़ार नहीं करेगा</em>",
+    ctaSub: "Clarix तब तैयार है जब आप हों — और उससे भी ज़रूरी, जब आप न हों।",
+    ctaBtn: "सहायक शुरू करें",
+    footerTagline: "अराजकता में स्पष्टता पाएं",
+    panicHead: "मैं आपके साथ हूँ।",
+    panicSub: "एक सांस लें। फिर नीचे दिए गए वृत्त को दबाएं।\nमुझे आपको इस स्क्रीन पर ध्यान देने की जरूरत है।",
+    tapText: "यहाँ\nदबाएं",
+    groundDone: "हो गया ✓",
+    breathContinue: "आगे बढ़ें →",
+    shoreTitle: "किनारा",
+    shoreMsg: "अच्छा। तत्काल खतरा टल गया है।\nमेरे साथ रहें। हम मिलकर रीसेट करते हैं।",
+    shoreReassurance: '"एक घंटे बाद, यह पहले से ही छोटा लगेगा।"',
+    comedyBtn: "🙂 मुझे 10 सेकंड के लिए मुस्कुराएं",
+    returnBtn: "Clarix पर वापस जाएं",
+    shoreLeave: "मैंने कार्रवाई की ✓",
+    assessYes: "✓ हाँ",
+    assessNo: "✗ नहीं / निश्चित नहीं",
+    emgTitle: "आपातकालीन संपर्क",
+    emgServices: "आपातकालीन सेवाएं",
+    emgYourPeople: "आपके लोग",
+    emgAdd: "+ संपर्क जोड़ें",
+    emgNamePlaceholder: "नाम",
+    emgNumPlaceholder: "फ़ोन",
+    emgSave: "सहेजें",
+  },
+  ur: {
+    navFeatures: "خصوصیات", navScience: "سائنس", navHow: "یہ کیسے کام کرتا ہے", navStories: "کہانیاں", navLaunch: "معاون شروع کریں",
+    landingTagline: "افراتفری میں وضاحت تلاش کریں",
+    landingSub: "ایک خود رہنما ڈیجیٹل پناہ گاہ جو آپ کو مستحکم کرنے، رہنمائی کرنے اور طوفان سے گزرنے میں مدد کرتی ہے۔",
+    ctaPrimary: "مجھے ابھی رہنمائی چاہیے",
+    ctaSecondary: "Clarix دریافت کریں",
+    scrollHint: "دریافت کریں",
+    featLabel: "بنیادی نظام",
+    featTitle: "اس <em>لمحے</em> کے لیے بنایا گیا<br>جب آپ کو سب سے زیادہ ضرورت ہو",
+    sciLabel: "ثبوت پر مبنی",
+    sciTitle: "ہر خصوصیت <em>سائنس</em> میں جڑی ہوئی ہے",
+    howLabel: "تجربہ",
+    howTitle: "گھبراہٹ سے <em>وضاحت</em> تک<br>چار نرم مراحل میں",
+    statsLabel: "اثر",
+    statsTitle: "سکون ایک <em>قابل پیمائش</em> نتیجہ ہے",
+    testLabel: "انسانی کہانیاں",
+    testTitle: "جب یہ <em>اہمیت رکھتا تھا</em>",
+    ctaLabel: "آپ کا لنگر آپ کا انتظار کرتا ہے",
+    ctaTitle: "اگلا بحران<br><em>آپ کے تیار ہونے کا انتظار نہیں کرے گا</em>",
+    ctaSub: "Clarix تب تیار ہے جب آپ ہوں — اور اس سے بھی اہم، جب آپ نہ ہوں۔",
+    ctaBtn: "معاون شروع کریں",
+    footerTagline: "افراتفری میں وضاحت تلاش کریں",
+    panicHead: "میں آپ کے ساتھ ہوں۔",
+    panicSub: "ایک سانس لیں۔ پھر نیچے دائرے کو تھپتھپائیں۔\nمجھے آپ کو اس اسکرین پر توجہ دینے کی ضرورت ہے۔",
+    tapText: "یہاں\nتھپتھپائیں",
+    groundDone: "ہو گیا ✓",
+    breathContinue: "جاری رکھیں →",
+    shoreTitle: "کنارہ",
+    shoreMsg: "اچھا۔ فوری خطرہ ٹل گیا ہے۔\nمیرے ساتھ رہیں۔ آئیں مل کر ری سیٹ کریں۔",
+    shoreReassurance: '"ایک گھنٹے بعد، یہ پہلے سے ہی چھوٹا لگے گا۔"',
+    comedyBtn: "🙂 مجھے 10 سیکنڈ کے لیے مسکرائیں",
+    returnBtn: "Clarix پر واپس جائیں",
+    shoreLeave: "میں نے کارروائی کی ✓",
+    assessYes: "✓ ہاں",
+    assessNo: "✗ نہیں / یقین نہیں",
+    emgTitle: "ہنگامی رابطے",
+    emgServices: "ہنگامی خدمات",
+    emgYourPeople: "آپ کے لوگ",
+    emgAdd: "+ رابطہ شامل کریں",
+    emgNamePlaceholder: "نام",
+    emgNumPlaceholder: "فون",
+    emgSave: "محفوظ کریں",
+  }
+};
+
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = TRANSLATIONS[lang];
+  const isRTL = lang === 'ur';
+  document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+
+  // Active button
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  const map = { en: 0, hi: 1, ur: 2 };
+  const btns = document.querySelectorAll('.lang-btn');
+  if (btns[map[lang]]) btns[map[lang]].classList.add('active');
+
+  // NAV
+  const navLinks = document.querySelectorAll('.nav-links a');
+  if (navLinks[0]) navLinks[0].textContent = t.navFeatures;
+  if (navLinks[1]) navLinks[1].textContent = t.navScience;
+  if (navLinks[2]) navLinks[2].textContent = t.navHow;
+  if (navLinks[3]) navLinks[3].textContent = t.navStories;
+  const nl = document.querySelector('.nav-launch');
+  if (nl) nl.textContent = t.navLaunch;
+
+  // Landing
+  const tag = document.querySelector('.landing-tagline');
+  if (tag) tag.textContent = t.landingTagline;
+  const sub = document.querySelector('.landing-sub');
+  if (sub) sub.textContent = t.landingSub;
+  const ctas = document.querySelectorAll('.cta-group button');
+  if (ctas[0]) ctas[0].textContent = t.ctaPrimary;
+  if (ctas[1]) ctas[1].textContent = t.ctaSecondary;
+  const sh = document.querySelector('.scroll-hint span');
+  if (sh) sh.textContent = t.scrollHint;
+
+  // Section labels & titles (use innerHTML for <em>)
+  const labels = document.querySelectorAll('.section-label');
+  const titles = document.querySelectorAll('.section-title');
+  const sectionData = [
+    { label: t.featLabel, title: t.featTitle },
+    { label: t.sciLabel, title: t.sciTitle },
+    { label: t.howLabel, title: t.howTitle },
+    { label: t.statsLabel, title: t.statsTitle },
+    { label: t.testLabel, title: t.testTitle },
+  ];
+  sectionData.forEach((d, i) => {
+    if (labels[i]) labels[i].textContent = d.label;
+    if (titles[i]) titles[i].innerHTML = d.title;
+  });
+
+  // Bottom CTA section
+  const ctaLabelEl = document.getElementById('cta-label');
+  const ctaTitleEl = document.getElementById('cta-title');
+  const ctaSubEl = document.getElementById('cta-sub');
+  const ctaBtnEl = document.getElementById('cta-btn');
+  if (ctaLabelEl) ctaLabelEl.textContent = t.ctaLabel;
+  if (ctaTitleEl) ctaTitleEl.innerHTML = t.ctaTitle;
+  if (ctaSubEl) ctaSubEl.textContent = t.ctaSub;
+  if (ctaBtnEl) ctaBtnEl.textContent = t.ctaBtn;
+
+  // Footer
+  const ftag = document.querySelector('.footer-tagline');
+  if (ftag) ftag.textContent = t.footerTagline;
+
+  // Modal elements
+  const ph = document.getElementById('panic-headline');
+  const ps = document.getElementById('panic-subtext');
+  const tc = document.getElementById('tapCircle');
+  if (ph) ph.textContent = t.panicHead;
+  if (ps) ps.textContent = t.panicSub;
+  if (tc) tc.innerHTML = t.tapText.replace('\n', '<br>');
+
+  const gdBtn = document.getElementById('ground-done-btn');
+  if (gdBtn) gdBtn.textContent = t.groundDone;
+  const bCont = document.getElementById('breath-continue-btn');
+  if (bCont) bCont.textContent = t.breathContinue;
+
+  const shTitle = document.getElementById('shore-title-el');
+  if (shTitle) shTitle.textContent = t.shoreTitle;
+  const shMsg = document.getElementById('shoreMsg');
+  if (shMsg) shMsg.innerHTML = t.shoreMsg.replace('\n', '<br>');
+  const shReass = document.getElementById('shoreReassurance');
+  if (shReass) shReass.textContent = t.shoreReassurance;
+  const comBtn = document.getElementById('comedy-btn-el');
+  if (comBtn) comBtn.textContent = t.comedyBtn;
+  const retBtn = document.getElementById('return-btn-el');
+  if (retBtn) retBtn.textContent = t.returnBtn;
+  const shoreBtn = document.getElementById('shore-leave-btn');
+  if (shoreBtn) shoreBtn.textContent = t.shoreLeave;
+
+  const ay = document.getElementById('assess-yes-btn');
+  const an = document.getElementById('assess-no-btn');
+  if (ay) ay.textContent = t.assessYes;
+  if (an) an.textContent = t.assessNo;
+
+  // Emergency drawer
+  const emgTitleEl = document.querySelector('.emg-title');
+  if (emgTitleEl) emgTitleEl.childNodes[emgTitleEl.childNodes.length-1].textContent = ' ' + t.emgTitle;
+  const emgLabels = document.querySelectorAll('.emg-section-label');
+  if (emgLabels[0]) emgLabels[0].textContent = t.emgServices;
+  if (emgLabels[1]) emgLabels[1].textContent = t.emgYourPeople;
+  const emgAddBtn = document.querySelector('.emg-add-btn');
+  if (emgAddBtn) emgAddBtn.textContent = t.emgAdd;
+  const nameIn = document.getElementById('contact-name');
+  const numIn = document.getElementById('contact-num');
+  if (nameIn) nameIn.placeholder = t.emgNamePlaceholder;
+  if (numIn) numIn.placeholder = t.emgNumPlaceholder;
+  const saveBtn = document.querySelector('.emg-save-btn');
+  if (saveBtn) saveBtn.textContent = t.emgSave;
+}
+
+// ============================================================
+// CRISIS MODAL LOGIC
+// ============================================================
+let currentPhase = 'panic';
+let stabilityScore = 30;
+let tapCount = 0;
+let tapTimestamps = [];
+let breathInterval = null;
+let breathPhase = 'inhale';
+let breathMethod = '478';
+let groundingStep = 0;
+let assessIndex = 0;
+let assessAnswers = [];
+
+const groundingSteps = [
+  { num: 5, sense: "SIGHT", label: "Name 5 things you can SEE", instruction: "Look around. A chair, a window, anything visible." },
+  { num: 4, sense: "TOUCH", label: "Notice 4 things you can TOUCH", instruction: "Your skin, clothing, floor, a surface near you." },
+  { num: 3, sense: "HEARING", label: "Hear 3 sounds around you", instruction: "Traffic, breathing, a clock. Listen carefully." },
+  { num: 2, sense: "SMELL", label: "Name 2 things you can SMELL", instruction: "Anything — air, food, your own hand." },
+  { num: 1, sense: "TASTE", label: "Notice 1 taste in your mouth", instruction: "Just notice. There's no wrong answer." }
+];
+
+const assessQuestions = [
+  "Are you physically safe right now?",
+  "Is someone else in immediate danger?",
+  "Do you need emergency medical services?",
+  "Is this a financial emergency?",
+  "Are you alone in this situation?"
+];
+
+const actionPlans = {
+  medical: [
+    { badge: "NOW", label: "NOW", text: "Call emergency services immediately. Say your location clearly. Keep the line open." },
+    { badge: "NEXT", label: "NEXT", text: "Keep the person conscious and talking. Do not move them unless absolutely necessary." },
+    { badge: "NEXT", label: "NEXT", text: "Unlock your front door for emergency responders. They are coming." }
+  ],
+  financial: [
+    { badge: "NOW", label: "NOW", text: "Stop any pending transactions or payments right now. Call your bank's fraud line." },
+    { badge: "NEXT", label: "NEXT", text: "Write down everything that happened while your memory is fresh. Dates, amounts, names." },
+    { badge: "NEXT", label: "NEXT", text: "Do not make any major decisions in the next 24 hours. Sleep. Then act." }
+  ],
+  general: [
+    { badge: "NOW", label: "NOW", text: "You are breathing. You are thinking. That is enough for this exact second." },
+    { badge: "NEXT", label: "NEXT", text: "Identify one single person you trust. Reach out to them. You don't have to explain everything." },
+    { badge: "NEXT", label: "NEXT", text: "Drink water. Move to a different physical space if possible. Small actions restore agency." }
+  ]
+};
+
+const comedyLines = [
+  "The universe will allow you one unclench.",
+  "You have survived 100% of your worst days so far. This one counts.",
+  "Somewhere right now, someone just dropped their entire sandwich. You are not alone.",
+  "Scientists confirm that breathing is still free. You're already winning.",
+  "Your nervous system called. It says: 'We got a little carried away. My bad.'",
+  "Plot twist: you handled it.",
+  "The ancestors who survived ice ages and plagues would like you to know: you've got this.",
+  "Fun fact: this exact panic response kept humans alive for 300,000 years. You're deeply functional.",
+  "A cat somewhere is asleep in the sun with zero concerns. Channel that energy.",
+  "The present moment has absolutely nothing against you personally."
+];
+
+function updateStability(isFrantic = false) {
+  if (isFrantic) stabilityScore = Math.max(10, stabilityScore - 5);
+  else stabilityScore = Math.min(100, stabilityScore + 8);
+  document.getElementById('stabFill').style.width = stabilityScore + '%';
+}
+
+function openCrisis() {
+  const modal = document.getElementById('crisis-modal');
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  currentPhase = 'panic';
+  stabilityScore = 30;
+  tapCount = 0;
+  assessIndex = 0;
+  assessAnswers = [];
+  groundingStep = 0;
+  showPhase('panic');
+  playPanicTone();
+  // Auto-start tone for calming
+  if (!activeSounds['tone']) {
+    setTimeout(() => toggleSound('tone'), 800);
+  }
+}
+
+function closeCrisis() {
+  const modal = document.getElementById('crisis-modal');
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+  if (breathInterval) { clearInterval(breathInterval); breathInterval = null; }
+}
+
+function closeCrisisFromBack(e) {
+  if (e.target === document.querySelector('.modal-backdrop')) closeCrisis();
+}
+
+function showPhase(phase) {
+  const phases = ['panic','grounding','breathing','assessment','action','shore'];
+  phases.forEach(p => {
+    const el = document.getElementById('phase-' + p);
+    if (el) {
+      el.style.display = p === phase ? 'block' : 'none';
+      if (p === phase) el.style.animation = 'none'; 
+      setTimeout(() => { if (p === phase && el) el.style.animation = 'fadeUp 0.6s ease'; }, 10);
+    }
+  });
+  currentPhase = phase;
+}
+
+// --- PANIC PHASE ---
+function tapCircleClicked() {
+  tapCount++;
+  tapTimestamps.push(Date.now());
+  
+  // Detect frantic tapping
+  if (tapTimestamps.length > 2) {
+    const lastTwo = tapTimestamps[tapTimestamps.length-1] - tapTimestamps[tapTimestamps.length-2];
+    if (lastTwo < 300) updateStability(true);
+    else updateStability(false);
+  }
+
+  const circle = document.getElementById('tapCircle');
+  circle.style.background = 'radial-gradient(circle, rgba(196,43,66,0.8), rgba(107,26,42,0.6))';
+  setTimeout(() => { circle.style.background = ''; }, 200);
+
+  if (tapCount >= 1) {
+    updateStability(false);
+    setTimeout(() => {
+      tapCount = 0;
+      startGrounding();
+    }, 400);
+  }
+}
+
+// --- GROUNDING PHASE ---
+function startGrounding() {
+  groundingStep = 0;
+  showPhase('grounding');
+  updateGroundingUI();
+}
+
+function updateGroundingUI() {
+  const s = groundingSteps[groundingStep];
+  document.getElementById('ground-num').textContent = s.num;
+  document.getElementById('ground-label').textContent = s.label;
+  document.getElementById('ground-instruction').textContent = s.instruction;
+  for (let i = 0; i < 5; i++) {
+    document.getElementById('gd'+i).classList.toggle('done', i < groundingStep);
+  }
+}
+
+function advanceGrounding() {
+  updateStability(false);
+  groundingStep++;
+  if (groundingStep >= groundingSteps.length) {
+    playSuccessTone();
+    setTimeout(() => startBreathing(), 300);
+  } else {
+    updateGroundingUI();
+  }
+}
+
+// --- BREATHING PHASE ---
+const breathMethods = {
+  '478': { phases: ['inhale','hold','exhale'], durations: [4,7,8], labels: ['Inhale','Hold','Exhale'], instructions: ['through your nose','hold','slowly through your mouth'] },
+  'box': { phases: ['inhale','hold_in','exhale','hold_out'], durations: [4,4,4,4], labels: ['Inhale','Hold','Exhale','Hold'], instructions: ['through your nose','hold still','through your mouth','hold still'] },
+  'physiological': { phases: ['inhale','inhale2','exhale'], durations: [2,2,8], labels: ['Inhale','Inhale again','Long Exhale'], instructions: ['short breath in','one more sniff','all the way out, slowly'] }
+};
+
+function setBreathMethod(method, label) {
+  breathMethod = method;
+  document.querySelectorAll('.breath-method-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (breathInterval) { clearInterval(breathInterval); breathInterval = null; }
+  runBreathing();
+}
+
+function startBreathing() {
+  showPhase('breathing');
+  runBreathing();
+}
+
+let breathPhaseIdx = 0;
+let breathCountdown = 0;
+function runBreathing() {
+  if (breathInterval) clearInterval(breathInterval);
+  const method = breathMethods[breathMethod];
+  breathPhaseIdx = 0;
+  startBreathPhase(method);
+}
+
+function startBreathPhase(method) {
+  const p = method.phases[breathPhaseIdx % method.phases.length];
+  const idx = breathPhaseIdx % method.phases.length;
+  const dur = method.durations[idx];
+  const label = method.labels[idx];
+  const instruct = method.instructions[idx];
+  
+  document.getElementById('breathLabel').textContent = label;
+  document.getElementById('breathInstruct').textContent = instruct;
+  
+  const isInhale = p.includes('inhale');
+  const isHold = p.includes('hold');
+  
+  playBreathTone(isInhale);
+  
+  // Animate circles
+  const bCore = document.getElementById('bCore');
+  const bRing = document.getElementById('bRing');
+  const bRing2 = document.getElementById('bRing2');
+  
+  if (isInhale) {
+    bCore.style.transform = 'scale(1.6)';
+    bRing.style.transform = 'scale(1.15)';
+    bRing2.style.transform = 'scale(1.2)';
+    bCore.style.boxShadow = '0 0 40px rgba(196,43,66,0.5)';
+  } else if (isHold) {
+    // no change
+  } else {
+    bCore.style.transform = 'scale(1)';
+    bRing.style.transform = 'scale(1)';
+    bRing2.style.transform = 'scale(1)';
+    bCore.style.boxShadow = '0 0 20px rgba(196,43,66,0.3)';
+  }
+  
+  breadCountdown = dur;
+  document.getElementById('breathCount').textContent = dur;
+  updateStability(false);
+  
+  let count = dur;
+  if (breathInterval) clearInterval(breathInterval);
+  breathInterval = setInterval(() => {
+    count--;
+    document.getElementById('breathCount').textContent = count;
+    if (count <= 0) {
+      clearInterval(breathInterval);
+      breathPhaseIdx++;
+      const method = breathMethods[breathMethod];
+      if (breathPhaseIdx < method.phases.length * 3) { // 3 full cycles
+        startBreathPhase(method);
+      }
+    }
+  }, 1000);
+}
+
+function skipBreathing() {
+  if (breathInterval) { clearInterval(breathInterval); breathInterval = null; }
+  // Reset circles
+  ['bCore','bRing','bRing2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.transform = 'scale(1)';
+  });
+  showAssessment();
+}
+
+// --- ASSESSMENT PHASE ---
+function showAssessment() {
+  assessIndex = 0;
+  assessAnswers = [];
+  showPhase('assessment');
+  updateAssessQ();
+}
+
+function updateAssessQ() {
+  const pct = (assessIndex / assessQuestions.length * 100) + 10;
+  document.getElementById('assessFill').style.width = pct + '%';
+  document.getElementById('assessQ').textContent = assessQuestions[assessIndex];
+}
+
+function answerAssess(answer) {
+  assessAnswers.push(answer);
+  updateStability(false);
+  assessIndex++;
+  if (assessIndex >= assessQuestions.length) {
+    buildActionPlan();
+  } else {
+    updateAssessQ();
+  }
+}
+
+function buildActionPlan() {
+  // Simple triage logic
+  let planType = 'general';
+  if (assessAnswers[2] === true) planType = 'medical'; // needs emergency medical
+  else if (assessAnswers[3] === true) planType = 'financial';
+  
+  const plan = actionPlans[planType];
+  showPhase('action');
+  
+  const container = document.getElementById('actionSteps');
+  container.innerHTML = '';
+  
+  plan.forEach((step, i) => {
+    const el = document.createElement('div');
+    el.className = `action-step ${step.badge === 'NOW' ? 'now-step' : 'next-step'}`;
+    el.innerHTML = `<span class="step-badge ${step.badge === 'NOW' ? 'now-badge' : 'next-badge'}">${step.label}</span><span class="step-text">${step.text}</span>`;
+    container.appendChild(el);
+    setTimeout(() => el.classList.add('show'), (i + 1) * 350);
+  });
+  
+  if (planType === 'medical') {
+    document.getElementById('actionTitle').textContent = 'Medical Emergency';
+    document.getElementById('actionSub').textContent = 'Start with what\'s glowing. The rest follows.';
+  } else if (planType === 'financial') {
+    document.getElementById('actionTitle').textContent = 'Financial Crisis';
+    document.getElementById('actionSub').textContent = 'One step at a time. You\'re still in control.';
+  }
+  
+  updateStability(false);
+  stabilityScore = Math.min(100, stabilityScore + 20);
+  document.getElementById('stabFill').style.width = stabilityScore + '%';
+}
+
+function showShore() {
+  playSuccessTone();
+  showPhase('shore');
+  stabilityScore = 95;
+  document.getElementById('stabFill').style.width = '95%';
+}
+
+function showComedy() {
+  const line = comedyLines[Math.floor(Math.random() * comedyLines.length)];
+  const el = document.getElementById('comedyLine');
+  el.style.opacity = '0';
+  setTimeout(() => { el.textContent = '"' + line + '"'; el.style.opacity = '1'; }, 200);
+}
+
+// Phone mock demo
+const phoneQs = [
+  "Are you physically safe right now?",
+  "Is someone else in danger?",
+  "Do you need emergency services?",
+  "Creating your action plan..."
+];
+let phoneQIdx = 0;
+function phoneYes() { nextPhoneQ(); }
+function phoneNo() { nextPhoneQ(); }
+function nextPhoneQ() {
+  phoneQIdx = (phoneQIdx + 1) % phoneQs.length;
+  const el = document.getElementById('phoneQ');
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(10px)';
+  setTimeout(() => {
+    el.textContent = phoneQs[phoneQIdx];
+    el.style.opacity = '1'; el.style.transform = '';
+    el.style.transition = 'all 0.4s ease';
+  }, 200);
+}
+
+// ============================================================
+// AUDIO PANEL TOGGLE
+// ============================================================
+let audioPanelOpen = false;
+function toggleAudioPanel() {
+  audioPanelOpen = !audioPanelOpen;
+  const drawer = document.getElementById('audio-drawer');
+  const btn = document.getElementById('audio-toggle-btn');
+  const icon = document.getElementById('fab-icon');
+  drawer.classList.toggle('open', audioPanelOpen);
+  btn.classList.toggle('open', audioPanelOpen);
+  icon.textContent = audioPanelOpen ? '✕' : '🎵';
+}
+// Close drawer if clicking outside
+document.addEventListener('click', e => {
+  if (audioPanelOpen && !document.getElementById('audio-panel').contains(e.target)) {
+    toggleAudioPanel();
+  }
+});
+
+// ============================================================
+// EMERGENCY PANEL
+// ============================================================
+let emergencyOpen = false;
+let savedContacts = JSON.parse(localStorage.getItem('clarix_contacts') || '[]');
+
+function toggleEmergencyPanel() {
+  emergencyOpen = !emergencyOpen;
+  document.getElementById('emergency-drawer').classList.toggle('open', emergencyOpen);
+  document.getElementById('emergency-toggle-btn').classList.toggle('open', emergencyOpen);
+  if (emergencyOpen) renderContacts();
+}
+
+document.addEventListener('click', e => {
+  if (emergencyOpen && !document.getElementById('emergency-panel').contains(e.target)) {
+    emergencyOpen = false;
+    document.getElementById('emergency-drawer').classList.remove('open');
+    document.getElementById('emergency-toggle-btn').classList.remove('open');
+  }
+});
+
+function toggleAddContact() {
+  const row = document.getElementById('contact-input-row');
+  row.classList.toggle('show');
+  if (row.classList.contains('show')) document.getElementById('contact-name').focus();
+}
+
+function saveContact() {
+  const name = document.getElementById('contact-name').value.trim();
+  const num = document.getElementById('contact-num').value.trim();
+  if (!name || !num) return;
+  savedContacts.push({ name, num });
+  localStorage.setItem('clarix_contacts', JSON.stringify(savedContacts));
+  document.getElementById('contact-name').value = '';
+  document.getElementById('contact-num').value = '';
+  document.getElementById('contact-input-row').classList.remove('show');
+  renderContacts();
+}
+
+function removeContact(i) {
+  savedContacts.splice(i, 1);
+  localStorage.setItem('clarix_contacts', JSON.stringify(savedContacts));
+  renderContacts();
+}
+
+function renderContacts() {
+  const container = document.getElementById('saved-contacts');
+  container.innerHTML = '';
+  if (savedContacts.length === 0) {
+    container.innerHTML = '<div style="font-size:0.75rem;color:rgba(242,236,228,0.25);padding:0.4rem 0.5rem;font-style:italic;">No contacts saved yet</div>';
+    return;
+  }
+  savedContacts.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.style.cssText = 'display:flex;align-items:center;gap:0.5rem;margin-bottom:0.45rem;';
+    el.innerHTML = `
+      <a class="emg-btn emg-contact-btn" href="tel:${c.num}" style="flex:1;margin-bottom:0;">
+        <span class="emg-icon">👤</span>
+        <span class="emg-btn-label">
+          <span class="emg-btn-name">${c.name}</span>
+          <span class="emg-btn-num">${c.num}</span>
+        </span>
+      </a>
+      <button onclick="removeContact(${i})" style="background:none;border:none;color:rgba(242,236,228,0.3);cursor:none;font-size:0.8rem;padding:0.3rem;transition:color 0.2s;" onmouseover="this.style.color='rgba(200,30,30,0.8)'" onmouseout="this.style.color='rgba(242,236,228,0.3)'">✕</button>`;
+    container.appendChild(el);
+  });
+}
+
+// ============================================================
+// LANGUAGE DROPDOWN
+// ============================================================
+let langDropdownOpen = false;
+
+function toggleLangDropdown() {
+  langDropdownOpen = !langDropdownOpen;
+  document.getElementById('langDropdown').classList.toggle('open', langDropdownOpen);
+}
+
+function selectLang(code, label) {
+  setLang(code);
+  document.getElementById('currentLang').textContent = label;
+  
+  // Update active state
+  document.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  // Close dropdown
+  langDropdownOpen = false;
+  document.getElementById('langDropdown').classList.remove('open');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  if (langDropdownOpen && !document.getElementById('langDropdown').contains(e.target)) {
+    langDropdownOpen = false;
+    document.getElementById('langDropdown').classList.remove('open');
+  }
+});
+
+// ============================================================
+// PARALLAX ORBS
+// ============================================================
+document.addEventListener('mousemove', e => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 20;
+  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+  document.querySelector('.orb1').style.transform = `translate(${x}px, ${y}px)`;
+  document.querySelector('.orb2').style.transform = `translate(${-x}px, ${-y}px)`;
+});
+
+// ============================================================
+// INITIALIZE LANG
+// ============================================================
+setLang('en');
+</script>
+</body>
+</html>
