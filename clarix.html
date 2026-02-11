@@ -412,3 +412,136 @@
     animation: modalUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
   }
 
+
+  @keyframes modalUp { from { opacity: 0; transform: translateY(50px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+  .modal-top {
+    padding: 1.8rem 2rem 1.2rem;
+    border-bottom: 1px solid rgba(107,26,42,0.2);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .modal-logo-small {
+    width: 36px; height: 36px; position: relative; flex-shrink: 0;
+  }
+  .modal-logo-ring {
+    position: absolute; inset: 0; border-radius: 50%;
+    border: 1px solid rgba(196,43,66,0.5);
+    animation: breathe 4s ease-in-out infinite;
+  }
+  .modal-logo-dot {
+    position: absolute; inset: 10px; border-radius: 50%;
+    background: radial-gradient(circle, var(--wine-glow), var(--wine));
+    box-shadow: 0 0 12px rgba(196,43,66,0.7);
+    animation: breathe 4s ease-in-out infinite 0.5s;
+  }
+  .modal-title-sm { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 300; color: var(--cream); }
+  .modal-close {
+    margin-left: auto; background: none; border: none;
+    color: var(--muted); font-size: 1.2rem; cursor: none;
+    opacity: 0.6; transition: opacity 0.2s; padding: 0.2rem;
+  }
+  .modal-close:hover { opacity: 1; }
+
+  .modal-body { padding: 2.5rem 2rem; min-height: 340px; }
+
+  /* Panic Interrupt Phase */
+  #phase-panic {
+    text-align: center;
+    animation: fadeUp 0.5s ease;
+  }
+  .panic-void {
+    width: 80px; height: 80px; margin: 0 auto 2rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,43,66,0.3) 0%, transparent 70%);
+    border: 2px solid rgba(196,43,66,0.5);
+    animation: panicPulse 0.8s ease-in-out infinite;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+  }
+  @keyframes panicPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(196,43,66,0.4); }
+    50% { transform: scale(1.1); box-shadow: 0 0 0 20px rgba(196,43,66,0); }
+  }
+  .panic-text { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: 0.8rem; color: var(--cream); }
+  .panic-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 2.5rem; line-height: 1.6; }
+  .tap-circle {
+    width: 100px; height: 100px; margin: 0 auto;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(107,26,42,0.5), rgba(61,14,24,0.3));
+    border: 2px solid var(--wine-glow);
+    cursor: none; display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; letter-spacing: 0.12em; color: var(--cream);
+    font-family: 'Space Mono', monospace; text-transform: uppercase; text-align: center;
+    transition: all 0.2s; box-shadow: 0 0 30px rgba(196,43,66,0.2);
+    animation: tapPulse 2s ease-in-out infinite;
+    user-select: none;
+  }
+  .tap-circle:hover { background: radial-gradient(circle, rgba(155,35,53,0.7), rgba(107,26,42,0.5)); box-shadow: 0 0 60px rgba(196,43,66,0.5); transform: scale(1.05); }
+  .tap-circle:active { transform: scale(0.93); }
+  @keyframes tapPulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(196,43,66,0.2), 0 0 0 0 rgba(196,43,66,0.3); }
+    50% { box-shadow: 0 0 50px rgba(196,43,66,0.4), 0 0 0 16px rgba(196,43,66,0); }
+  }
+
+  /* Grounding 5-4-3-2-1 */
+  #phase-grounding { text-align: center; animation: fadeUp 0.6s ease; display: none; }
+  .countdown-display {
+    font-family: 'Cormorant Garamond', serif; font-size: 6rem;
+    font-weight: 300; color: var(--wine-glow);
+    line-height: 1; margin: 1rem 0;
+    text-shadow: 0 0 60px rgba(196,43,66,0.4);
+  }
+  .countdown-label { font-size: 0.9rem; color: var(--cream); margin-bottom: 0.5rem; font-weight: 300; }
+  .countdown-instruction { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--muted); font-style: italic; margin: 0.5rem 0 2rem; }
+  .ground-progress { display: flex; gap: 0.5rem; justify-content: center; margin: 1.5rem 0; }
+  .gp-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(107,26,42,0.4); border: 1px solid var(--border); transition: all 0.3s; }
+  .gp-dot.done { background: var(--wine-glow); box-shadow: 0 0 8px rgba(196,43,66,0.5); }
+
+  /* Breathing phase */
+  #phase-breathing { text-align: center; animation: fadeUp 0.6s ease; display: none; }
+  .breath-circle-wrap { position: relative; width: 160px; height: 160px; margin: 0 auto 2rem; }
+  .breath-ring {
+    position: absolute; inset: 0; border-radius: 50%;
+    border: 2px solid rgba(196,43,66,0.3);
+    transition: transform 4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .breath-ring-2 {
+    position: absolute; inset: 20px; border-radius: 50%;
+    border: 1px solid rgba(196,43,66,0.2);
+    transition: transform 4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .breath-core {
+    position: absolute; inset: 50px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,43,66,0.5), rgba(107,26,42,0.2));
+    transition: transform 4s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 0 20px rgba(196,43,66,0.3);
+  }
+  .breath-label { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--cream); margin-bottom: 0.5rem; }
+  .breath-count { font-family: 'Space Mono', monospace; font-size: 3rem; color: var(--wine-glow); line-height: 1; }
+  .breath-instruction { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Space Mono', monospace; font-size: 0.65rem; }
+  .breath-method-select { display: flex; gap: 0.8rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .breath-method-btn {
+    padding: 0.4rem 1rem; border-radius: 100px;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); font-size: 0.75rem; font-family: 'Space Mono', monospace;
+    letter-spacing: 0.1em; cursor: none; transition: all 0.2s;
+  }
+  .breath-method-btn.active, .breath-method-btn:hover { border-color: var(--wine-glow); color: var(--cream); background: rgba(107,26,42,0.2); }
+
+  /* Assessment phase */
+  #phase-assessment { animation: fadeUp 0.6s ease; display: none; }
+  .assess-progress-bar { height: 2px; background: rgba(107,26,42,0.3); border-radius: 1px; margin-bottom: 2.5rem; overflow: hidden; }
+  .assess-fill { height: 100%; background: linear-gradient(90deg, var(--wine), var(--wine-glow)); border-radius: 1px; transition: width 0.5s ease; }
+  .assess-q { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; color: var(--cream); text-align: center; margin-bottom: 2rem; line-height: 1.4; }
+  .assess-btns { display: flex; flex-direction: column; gap: 0.8rem; }
+  .assess-btn {
+    width: 100%; padding: 1rem; border-radius: 14px; cursor: none;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 400;
+    transition: all 0.25s; text-align: left; padding: 1rem 1.4rem;
+  }
+  .assess-btn-yes { background: linear-gradient(135deg, rgba(107,26,42,0.6), rgba(155,35,53,0.4)); border: 1px solid rgba(196,43,66,0.4); color: var(--cream); }
+  .assess-btn-yes:hover { background: linear-gradient(135deg, rgba(107,26,42,0.9), rgba(155,35,53,0.7)); box-shadow: 0 0 20px rgba(196,43,66,0.3); transform: translateX(4px); }
+  .assess-btn-no { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: var(--muted); }
+  .assess-btn-no:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.15); color: var(--cream); transform: translateX(4px); }
+
+
