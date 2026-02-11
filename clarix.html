@@ -392,5 +392,23 @@
     display: none; align-items: center; justify-content: center;
     padding: 1rem;
   }
+  #crisis-modal.active { display: flex; }
+  .modal-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(5,2,4,0.96);
+    backdrop-filter: blur(20px);
+    animation: fadeIn 0.5s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+  .modal-content {
+    position: relative; z-index: 2;
+    width: 100%; max-width: 540px;
+    background: linear-gradient(175deg, rgba(20,10,14,0.99) 0%, rgba(12,6,9,0.99) 100%);
+    border: 1px solid rgba(107,26,42,0.35);
+    border-radius: 28px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1px rgba(196,43,66,0.08), var(--glow);
+    overflow: hidden;
+    animation: modalUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
+  }
 
